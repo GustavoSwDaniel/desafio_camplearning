@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Lista de Arquivos{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto mt-5">
+        <h2 class="text-3xl font-bold mb-6 text-center">Lista de Arquivos</h2>
+        <div class="text-center mb-4">
+            <a href="{% url 'upload_file' %}" class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition duration-200">Upload de Novo Arquivo</a>
+        </div>
+        
+        <div class="overflow-x-auto rounded-lg shadow-md">
+            <table class="min-w-full bg-white border border-gray-300">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="py-3 px-4 border-b text-left">Título</th>
+                        <th class="py-3 px-4 border-b text-left">Arquivo</th>
+                        <th class="py-3 px-4 border-b text-left">Preview</th>
+                        <th class="py-3 px-4 border-b text-left">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for file in files %}
+                    <tr class="hover:bg-gray-100 transition duration-200">
+                        <td class="py-2 px-4 border-b">{{ file.file_name }}</td>
+                        <td class="py-2 px-4 border-b">
+                            <a href="{{ file.url.url }}" class="text-blue-500 hover:underline" target="_blank">Download</a>
+                        </td>
+                        <td class="py-2 px-4 border-b">
+                            {% if file.file_name|slice:"-4:" == ".png" or file.file_name|slice:"-4:" == ".jpg" or file.file_name|slice:"-4:" == ".jpeg" %}
+                                <img src="{{ file.url.url }}" alt="{{ file.file_name }}" class="w-16 h-16 object-cover rounded-md shadow-sm">
+                            {% else %}
+                                <p class="text-gray-600">Formato não suportado para preview</p>
+                            {% endif %}
+                        </td>
+                        <td class="py-2 px-4 border-b">
+                            <button type="button" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-200"
+                                    onclick="toggleModal({{ file.pk }}, '{{ file.file_name|escapejs }}')">
+                                Excluir
+                            </button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center py-2 text-gray-500">Nenhum arquivo encontrado.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="confirmDeleteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="relative mx-auto p-8 border w-96 shadow-lg rounded-lg bg-white">
+                <div class="mt-3 text-center">
+                    <h3 class="text-xl leading-6 font-semibold text-gray-800">Confirmação de Exclusão</h3>
+                    <div class="mt-2 px-4 py-3">
+                        <p class="text-sm text-gray-600">Tem certeza de que deseja excluir o arquivo <strong id="fileToDelete"></strong>?</p>
+                    </div>
+                    <div class="flex justify-center mt-4">
+                        <form method="post" id="deleteForm">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition duration-200 mr-2">
+                                Excluir
+                            </button>
+                        </form>
+                        <button class="bg-gray-500 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition duration-200" onclick="toggleModal()">
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+        function toggleModal(fileId = null, fileName = null) {
+            const modal = document.getElementById('confirmDeleteModal');
+            modal.classList.toggle('hidden');
+
+            if (fileId && fileName) {
+                document.getElementById('fileToDelete').innerText = fileName;
+                document.getElementById('deleteForm').action = `/files/delete/${fileId}/`;
+            }
+        }
+    </script>
+{% endblock %}

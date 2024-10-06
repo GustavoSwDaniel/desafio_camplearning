@@ -23,6 +23,7 @@ from desafio_camplearning import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('files/', include('files.urls')),  # Inclui as URLs do aplicativo files
+    path('files/', include('files.urls')),
+    path('users/', include('users.urls'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

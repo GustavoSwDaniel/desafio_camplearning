@@ -1,3 +1,0 @@
-class ListFiles:
-    def execute():
-        ...
