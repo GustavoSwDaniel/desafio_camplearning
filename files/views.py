@@ -10,6 +10,13 @@ from .models import Files
 from .forms import FileForm
 
 
+def redirect_to_files(request):
+    if request.user.is_authenticated:
+        return redirect('/files/')
+    else:
+        return redirect('/users/login/')
+
+@login_required 
 def file_list_view(request):
     files = Files.objects.filter(user_id=request.user)
     return render(request, 'files/file_list.html', {'files': files})
@@ -31,7 +38,7 @@ def file_upload_view(request):
     
     return render(request, 'files/upload_file.html', {'form': form})
 
-
+@login_required 
 def file_delete_view(request, pk):
     file_to_delete = get_object_or_404(Files, pk=pk)
     if request.method == 'POST':
