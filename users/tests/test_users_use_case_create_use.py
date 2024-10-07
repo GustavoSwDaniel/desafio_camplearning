@@ -1,7 +1,8 @@
 from django.test import TestCase, RequestFactory
 from django.contrib.auth import get_user_model
 from django.contrib.sessions.middleware import SessionMiddleware
-from users.user_case.create_user_use_case import CreateUserUseCase
+
+from users.use_case.create_user_use_case import CreateUserUseCase
 
 class CreateUserUseCaseTest(TestCase):
     def setUp(self):
