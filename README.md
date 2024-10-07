@@ -57,6 +57,15 @@ Siga os passos abaixo para rodar o projeto em um ambiente Docker:
 
    Você pode usar essas credenciais para acessar a interface de administração do Django e gerenciar usuários e arquivos.
 
+## Para rodar os teste unitarios 
+   Roda os seguinte comandos 
+ ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   python manage.py test
+   ```
+
 ## Acessando o sistema
 
 - O sistema estará disponível em: [http://127.0.0.1:8000](http://127.0.0.1:8000)
@@ -68,6 +77,8 @@ Siga os passos abaixo para rodar o projeto em um ambiente Docker:
 - **AWS S3** para armazenamento de arquivos.
 - **PostgreSQL** como banco de dados para armazenar informações de usuários e arquivos.
 - **Docker** para facilitar a configuração e execução do ambiente de desenvolvimento e produção.
+
+
 
 ## Tecnologias Utilizadas
 
