@@ -1,16 +1,9 @@
-from django.shortcuts import redirect, render
-from django.contrib.auth import login
+from django.shortcuts import render
 
-from users.forms import UserForm
-
+from users.user_case.create_user_use_case import CreateUserUseCase
 
 def create_user(request):
-    if request.method == 'POST':
-        form = UserForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)  
-            return redirect('file_list')
-    else:
-        form = UserForm()
+    use_case = CreateUserUseCase(request)
+    form = use_case.execute()
+
     return render(request, 'users/register_user.html', {'form': form})
