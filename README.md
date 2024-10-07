@@ -40,7 +40,7 @@ Siga os passos abaixo para rodar o projeto em um ambiente Docker:
 
 1. Clone o repositório para o seu ambiente local:
    ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
+   git clone https://github.com/GustavoSwDaniel/desafio_camplearning.git
    cd seu-repositorio
    ```
 
